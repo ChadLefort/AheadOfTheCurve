@@ -1,0 +1,23 @@
+package-as: AheadOfTheCurve
+
+externals:
+    Lib/LibStub: https://repos.wowace.com/wow/libstub/trunk/
+    Lib/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+    Lib/AceAddon-3.0: https://repos.wowace.com/wow/ace3/trunk/AceAddon-3.0
+    Lib/AceEvent-3.0: https://repos.wowace.com/wow/ace3/trunk/AceEvent-3.0
+    Lib/AceDB-3.0: https://repos.wowace.com/wow/ace3/trunk/AceDB-3.0
+    Lib/AceConsole-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConsole-3.0 
+    Lib/AceConfig-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0
+    Lib/AceConfigDialog-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0/AceConfigDialog-3.0
+    Lib/AceConfigRegistry-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0/AceConfigRegistry-3.0
+    Lib/AceDBOptions-3.0: https://repos.wowace.com/wow/ace3/trunk/AceDBOptions-3.0
+    Lib/AceHook-3.0: https://repos.wowace.com/wow/ace3/trunk/AceHook-3.0
+
+ignore:
+    - .gitignore
+    - README.md
+    - LICENSE.md
+
+manual-changelog:
+    filename: CHANGELOG.md
+    markup-type: markdown

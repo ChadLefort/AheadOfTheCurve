@@ -1,0 +1,17 @@
+## Interface: 70100
+## Title: Ahead of the Curve
+## Notes: Auto Ahead of the Curve Achievement Whispers
+## Version: @project-version@
+## DefaultState: enabled
+## Author: Pigletoos
+## SavedVariables: AheadOfTheCurveDB
+## OptionalDeps: Ace3, LibStub, CallbackHandler-1.0
+## X-Category: Buffs & Debuffs
+## X-Website: 
+## X-Curse-Packaged-Version: @project-version@
+## X-Curse-Project-Name: Ahead of the Curve
+## X-Curse-Project-ID: 
+## X-License: MIT License
+
+LoadLibs.xml
+AheadOfTheCurve.lua
