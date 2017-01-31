@@ -3,18 +3,25 @@ aotc = LibStub('AceAddon-3.0'):NewAddon('AheadOfTheCurve', 'AceConsole-3.0', 'Ac
 local AceConfig = LibStub('AceConfig-3.0')
 local AceConfigDialog = LibStub('AceConfigDialog-3.0')
 local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
+local container
 local button
 
 local highestDefault = {
-    emeraldNightmare = {
+    {
+        raid = 'Emerald Nightmare',
+        ids = {413, 414, 468},
         achievements = {11191, 11194, 10820},
         highestCompleted = nil,
     },
-    trialOfValor = {
+    {
+        raid = 'Trial of Valor',
+        ids = {456, 457},
         achievements = {11580, 11581, 11394},
         highestCompleted = nil,
     }, 
-    nighthold= {
+    {
+        raid = 'The Nighthold',
+        ids = {415, 416},
         achievements = {11192, 11195, 10839},
         highestCompleted = nil,
     }
@@ -25,7 +32,7 @@ local dbDefaults = {
     enable = {
         addon = true,
         override = false,
-        whipser = true
+        whisper = true
     }
   }
 }
@@ -46,36 +53,57 @@ function aotc:OnInitialize()
     AceConfig:RegisterOptionsTable('AheadOfTheCurve', options)
     AceConfigDialog:AddToBlizOptions('AheadOfTheCurve', 'AheadOfTheCurve')
 
-    self:RegisterChatCommand('aotc', 'OpenOptions') 
+    self:RegisterChatCommand('aotc', 'OpenOptions')
 
-    local container = CreateFrame('Frame', 'AoTCDialog', LFGListApplicationDialog, 'ThinBorderTemplate')
-    container:SetSize(305, 40)
-    container:SetPoint('BOTTOM', 0, -45)
+    container = CreateFrame('Frame', 'AoTCDialog', LFGListApplicationDialog)
+    container:SetSize(306, 50)
+    container:SetPoint('BOTTOM', 0, -55)
+    container:SetBackdrop({
+        bgFile = 'Interface\\DialogFrame\\UI-DialogBox-Background',
+        edgeFile = 'Interface\\DialogFrame\\UI-DialogBox-Border',
+        tile = true, tileSize = 32, edgeSize = 32,
+        insets = { left = 8, right = 8, top = 8, bottom = 8 }
+    })
 
     button = CreateFrame('CheckButton', 'AoTCCheckBox', container, 'UICheckButtonTemplate')
     button:SetSize(24, 24)
     button:SetPoint('CENTER', -45, 0)
-    button:SetChecked(self.db.global.enable.whipser)
-    button.text:SetText('Use AoTC Whipser')
+    button:SetChecked(self.db.global.enable.whisper)
+    button.text:SetText('Use AoTC Whisper')
     button.text:SetWidth(100)
+    button:SetScript('OnEnter', function(self) 
+        GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+        GameTooltip:SetText('Will only send for the following raids: \n Emerald Nightmare \n Trial of Valor \n The Nighthold', nil, nil, nil, nil, true) 
+        GameTooltip:Show() 
+    end)
+    button:SetScript('OnLeave', function() GameTooltip:Hide() end)
 end
 
 function aotc:OnEnable()
+    self:HookScript(LFGListFrame.CategorySelection.FindGroupButton, 'OnClick', 'GetLFGCategory')
     self:HookScript(LFGListApplicationDialog.SignUpButton, 'OnClick', 'GetLFGInfo')
     self:RegisterEvent('ACHIEVEMENT_SEARCH_UPDATED')
-    self:GetHighestDefault('emeraldNightmare')
-    self:GetHighestDefault('trialOfValor')
-    self:GetHighestDefault('nighthold')
+    self:GetHighestDefault()
+end
+
+function aotc:GetLFGCategory(self)
+    local category = self:GetParent().selectedCategory;
+
+    if category ~= 3 then
+        container:Hide()
+    else
+        container:Show()
+    end
 end
 
 function aotc:OpenOptions()
-    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 475, 475)
+    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, 465)
     AceConfigDialog:Open('AheadOfTheCurve')
 end
 
 function aotc:GetLFGInfo(self)
     local id, 
-        activityID, 
+        raidId, 
         name,
         comment, 
         voiceChat, 
@@ -88,20 +116,41 @@ function aotc:GetLFGInfo(self)
         isDelisted,
         leaderName = C_LFGList.GetSearchResultInfo(self:GetParent().resultID)
     
-    aotc.test = C_LFGList.GetActivityInfo(activityID)
+    -- aotc.raid = string.gsub(C_LFGList.GetActivityInfo(raidId) ,'%s%b()', '')
 
     if button:GetChecked() then
-        --SendChatMessage(GetAchievementLink(11194), 'WHISPER', nil, leaderName)
-        aotc:Print(string.format('Whisper sent to %s', leaderName))
+        local achievementId
+
+        if aotc.db.global.enable.override then
+            achievementId = aotc.db.global.overrideAchievement        
+        else
+            achievementId = aotc:GetAchievement(raidId)
+        end
+
+        if achievementId then
+            local success = pcall(SendChatMessage, pcall(GetAchievementLink(achievementId)), 'WHISPER', nil, leaderName)
+
+            if not success then
+                aotc:Print('There was an error sending your whisper.')     
+            end 
+        else
+            aotc:Print('Whisper not sent. No achievement found.')
+        end
     end
 end
 
-local numFiltered
+function aotc:GetAchievement(raidId)
+    for index, raid in pairs(highestDefault) do
+        for _, id in pairs(raid.ids) do
+            if id == raidId then
+                return raid.highestCompleted
+            end
+        end
+    end
+end
 
 function aotc:ACHIEVEMENT_SEARCH_UPDATED()
-    numFiltered = GetNumFilteredAchievements();
-
-    self:Print(numFiltered)
+    local numFiltered = GetNumFilteredAchievements();
 
     -- Limit searchs to only 500 results for now
     if numFiltered < 500 then
@@ -122,13 +171,15 @@ function aotc:ACHIEVEMENT_SEARCH_UPDATED()
     AceConfigRegistry:NotifyChange('AheadOfTheCurve')
 end
 
-function aotc:GetHighestDefault(raid)
-    for index, value in pairs(highestDefault[raid].achievements) do
-        local _, _, _, completed = GetAchievementInfo(value)
+function aotc:GetHighestDefault()
+    for index, raid in pairs(highestDefault) do
+        for _, id in pairs(raid.achievements) do
+            local _, _, _, completed = GetAchievementInfo(id)
 
-        if completed then
-            highestDefault[raid].highestCompleted = value
-            return
+            if completed then
+                highestDefault[index].highestCompleted = id
+                break
+            end
         end
     end
 end
@@ -151,8 +202,8 @@ function aotc:GetOptions()
                 width = 'full',
                 disabled = true,
                 get = function()
-                    if highestDefault.emeraldNightmare.highestCompleted ~= nil then 
-                        local _, name = GetAchievementInfo(highestDefault.emeraldNightmare.highestCompleted) 
+                    if highestDefault[1].highestCompleted ~= nil then 
+                        local _, name = GetAchievementInfo(highestDefault[1].highestCompleted) 
                         return name
                     else
                         return 'None Completed'
@@ -161,13 +212,13 @@ function aotc:GetOptions()
             },
             trialOfValor = {
                 order = 0.3,
-                name = 'Trial Of Valor',
+                name = 'Trial of Valor',
                 type = 'input',
                 width = 'full',
                 disabled = true,
                 get = function()
-                    if highestDefault.trialOfValor.highestCompleted ~= nil then 
-                        local _, name = GetAchievementInfo(highestDefault.trialOfValor.highestCompleted) 
+                    if highestDefault[2].highestCompleted ~= nil then 
+                        local _, name = GetAchievementInfo(highestDefault[2].highestCompleted) 
                         return name
                     else
                         return 'None Completed'
@@ -176,13 +227,13 @@ function aotc:GetOptions()
             },
             nighthold = {
                 order = 0.4,
-                name = 'Nighthold',
+                name = 'The Nighthold',
                 type = 'input',
                 width = 'full',
                 disabled = true,
                 get = function()
-                    if highestDefault.nighthold.highestCompleted ~= nil then 
-                        local _, name = GetAchievementInfo(highestDefault.nighthold.highestCompleted) 
+                    if highestDefault[3].highestCompleted ~= nil then 
+                        local _, name = GetAchievementInfo(highestDefault[3].highestCompleted) 
                         return name
                     else
                         return 'None Completed'
@@ -231,12 +282,12 @@ function aotc:GetOptions()
             },
             enableWhisper = {
                 order = 2.1,
-                name = 'Always Check Whipser Dialog Checkbox',
+                name = 'Always Check Whisper Dialog Checkbox',
                 desc = 'This will always check the whisper dialog checkbox when signing up for a group by default.',
                 type = 'toggle',
                 width = 'full',
-                get = function() return self.db.global.enable.whipser end,
-                set = function(info, value) self.db.global.enable.whipser = value end ,
+                get = function() return self.db.global.enable.whisper end,
+                set = function(info, value) self.db.global.enable.whisper = value end ,
                 confirm = function() return 'Changes to this setting will not take effect until the ui is reloaded.' end
             },
             header4 = {
