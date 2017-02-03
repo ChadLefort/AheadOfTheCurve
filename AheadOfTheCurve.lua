@@ -55,6 +55,7 @@ function AheadOfTheCurve:OnEnable()
     self:HookScript(LFGListFrame.SearchPanel.SignUpButton, 'OnClick', 'GetLFGRaid')
     self:HookScript(LFGListApplicationDialog.SignUpButton, 'OnClick', 'SendWhisper')
     self:RegisterEvent('ACHIEVEMENT_SEARCH_UPDATED')
+    self:RegisterEvent('ACHIEVEMENT_EARNED')
     self:GetHighestDefaultAchievement()
 
     if not container then
@@ -91,6 +92,7 @@ end
 function AheadOfTheCurve:OnDisable()
     self:UnhookAll()
     self:UnregisterEvent('ACHIEVEMENT_SEARCH_UPDATED')
+    self:UnregisterEvent('ACHIEVEMENT_EARNED')
     container:Hide()
     checkButton:Hide()
 end
@@ -116,6 +118,11 @@ function AheadOfTheCurve:ACHIEVEMENT_SEARCH_UPDATED()
     AceConfigRegistry:NotifyChange('AheadOfTheCurve')
 end
 
+function AheadOfTheCurve:ACHIEVEMENT_EARNED()
+    self:GetHighestDefaultAchievement()
+    AceConfigRegistry:NotifyChange('AheadOfTheCurve')
+end
+
 function AheadOfTheCurve:GetHighestDefaultAchievement()
     for index, raid in pairs(raids) do
         for _, id in pairs(raid.achievements) do
@@ -135,7 +142,7 @@ function AheadOfTheCurve:DisplayHighestDefaultAchievement(index)
         return name
     else
         return 'None Completed'
-    end 
+    end
 end
 
 function AheadOfTheCurve:GetLFGCategory(findAGroupButton)

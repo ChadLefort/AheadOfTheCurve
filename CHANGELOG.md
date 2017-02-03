@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.0 Beta 2 (02/02/2017)
+
+### Improvements
+
+- Changed default highest achievments found from input boxes to text descriptions since they can't be changed.
+- Added AoTC achievment icons to default highest achievments found.
+- Default highest achievments found will now update dynamically.
+
 ## 1.0.0 Beta 1 (02/01/2017)
 
 ### Features

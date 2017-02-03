@@ -6,17 +6,18 @@ local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
 
 function AheadOfTheCurveOptions:OnInitialize()
     self.db = AheadOfTheCurve.db
+    self:RegisterChatCommand('aotc', 'OpenOptions')
+end
 
+function AheadOfTheCurveOptions:OnEnable()
     local options = self:GetOptions()
     
     AceConfig:RegisterOptionsTable('AheadOfTheCurve', options)
     AceConfigDialog:AddToBlizOptions('AheadOfTheCurve', 'AheadOfTheCurve')
-
-    self:RegisterChatCommand('aotc', 'OpenOptions')
 end
 
 function AheadOfTheCurveOptions:OpenOptions()
-    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, 500)
+    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, 465)
     AceConfigDialog:Open('AheadOfTheCurve')
 end
 
@@ -50,27 +51,24 @@ function AheadOfTheCurveOptions:GetOptions()
             },
             emeraldNightmare = {
                 order = 1.2,
-                name = 'Emerald Nightmare',
-                type = 'input',
-                width = 'full',
-                disabled = true,
-                get = function() return AheadOfTheCurve:DisplayHighestDefaultAchievement(1) end
+                image = function() local _, _, _, _, _, _, _, _, _, iconPath = GetAchievementInfo(10820) return iconPath end,
+                name = function() return string.format('Emerald Nightmare: %s', AheadOfTheCurve:DisplayHighestDefaultAchievement(1)) end,
+                type = 'description',
+                width = 'full'
             },
             trialOfValor = {
                 order = 1.3,
-                name = 'Trial of Valor',
-                type = 'input',
-                width = 'full',
-                disabled = true,
-                get = function() return AheadOfTheCurve:DisplayHighestDefaultAchievement(2) end
+                image = function() local _, _, _, _, _, _, _, _, _, iconPath = GetAchievementInfo(11394) return iconPath end,
+                name = function() return string.format('Trial of Valor: %s', AheadOfTheCurve:DisplayHighestDefaultAchievement(2)) end,
+                type = 'description',
+                width = 'full'
             },
             nighthold = {
                 order = 1.4,
-                name = 'The Nighthold',
-                type = 'input',
-                width = 'full',
-                disabled = true,
-                get = function() return AheadOfTheCurve:DisplayHighestDefaultAchievement(3) end
+                image = function() local _, _, _, _, _, _, _, _, _, iconPath = GetAchievementInfo(10839) return iconPath end,
+                name = function() return string.format('The Nighthold: %s', AheadOfTheCurve:DisplayHighestDefaultAchievement(3)) end,
+                type = 'description',
+                width = 'full'
             },
             header2 = {
                 order = 2,
@@ -131,7 +129,7 @@ function AheadOfTheCurveOptions:GetOptions()
             },
             about = {
                 order = 4.1,
-                name = 'Version: @project-version@ Created by Pigletoos of Skywall',
+                name = 'Version: @project-version@ \nCreated by Pigletoos of Skywall',
                 type = 'description'
             }
         }
