@@ -11,6 +11,7 @@ externals:
     Lib/AceConfig-3.0: https://repos.wowace.com/wow/ace3/trunk/AceConfig-3.0
     Lib/AceDBOptions-3.0: https://repos.wowace.com/wow/ace3/trunk/AceDBOptions-3.0
     Lib/AceHook-3.0: https://repos.wowace.com/wow/ace3/trunk/AceHook-3.0
+    Lib/LibDBIcon-1.0: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
 
 ignore:
     - .gitignore

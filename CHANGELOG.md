@@ -1,5 +1,21 @@
 # Change Log
 
+## 1.0.0 (02/05/2017)
+
+### New Features
+
+- Added Mythic Plus and Karazhan!
+- Clicking on the button or icon under Default Highest Achievements Found section will now link that achievement to your chat input box.
+
+### Improvements
+
+- Made search ui a bit better by showing results returned and a default option if you have never picked an override. (Thanks Velgana!)
+- If no achievements are found under the Default Highest Achievements Found then a message will now appear.
+- If no achievement is found under the Default Highest Achievements Found section it will no longer list that raid/dungeon.
+- Minor code cleanup.
+- Bliz options now has a configure button to open up the options menu.
+- Added minimap icon. (Thanks Velgana!)
+
 ## 1.0.0 Beta 2 (02/02/2017)
 
 ### Improvements

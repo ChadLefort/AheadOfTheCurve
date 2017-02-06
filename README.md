@@ -8,20 +8,22 @@ A World of Wacraft addon that automates the sending of Ahead of the Curve achiev
 
 ### Features
 
-- Automates the sending of Ahead of the Curve achievments when signing up for raid groups via the LFG system.
-- Currently only works for Legion raids.
-- Determines highest achievment found for the raid your signing up for on your account (Cutting Edge, Ahead of the Curve, Normal/LFR Achievement).
-- Allows you to override defaults by picking any achievement you have completed. This override will send for any Legion raid you sign up for.
+- Automates the sending of Ahead of the Curve/Mythic Plus/Karazhan achievements when signing up for groups via the LFG system.
+- Determines highest achievment found for the raid your signing up for on your account.
+    - Raids: Cutting Edge, Ahead of the Curve, Normal/LFR Achievement
+    - Mythic Plus: Realm First! Keystone Master, Keystone Master, Keystone Conqueror, Keystone Challenger
+    - Karazhan: One Night in Karazhan, Return to Karazhan
+- Allows you to override defaults by picking any achievement you have completed. This override will send for any Legion raid, mythic plus dungeon, or Karazhan group you sign up for.
 - When signing up for a group you have the option to send a whisper or not. If no default achievement is found and no override is set no whisper will be sent.
+- Clicking on the button or icon under the Default Highest Achievements Found section will now link that achievement to your chat input box.
 
 ### Future Additions
 
-- Expand to Mythic+ and Karazhan
 - Smart Send (Sends always based on group listing's title and description)
 
 ### Options
 
-Found under **Interface > AddOns Tab > AheadOfTheCurve** or using the slash command `/aotc`
+Found using the slash command `/aotc` or under **Interface > AddOns Tab > Ahead of the Curve > Configure Button**
 
 ### Slash Commands
 

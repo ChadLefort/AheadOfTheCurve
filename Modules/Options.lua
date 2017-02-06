@@ -3,22 +3,92 @@ local AheadOfTheCurveOptions = AheadOfTheCurve:NewModule('AheadOfTheCurveOptions
 local AceConfig = LibStub('AceConfig-3.0')
 local AceConfigDialog = LibStub('AceConfigDialog-3.0')
 local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
+local LDB = LibStub('LibDataBroker-1.1')
+local icon = LibStub('LibDBIcon-1.0')
+local newSearch = false
 
 function AheadOfTheCurveOptions:OnInitialize()
     self.db = AheadOfTheCurve.db
     self:RegisterChatCommand('aotc', 'OpenOptions')
+
+    local aotcLDB = LDB:NewDataObject('AheadOfTheCurveMinimap', {
+        type = 'data source',
+        text = 'AheadOfTheCurveMinimap',
+        icon = 'Interface\\AddOns\\AheadOfTheCurve\\Media\\icon',
+        OnClick = function(_, button) 
+            if button == 'LeftButton' then
+                self:OpenOptions() 
+            end 
+        end,
+        OnTooltipShow = function(self)
+            self:AddLine('Ahead of the Curve')
+            self:AddLine('Left Click to open the options menu.')
+        end
+    })
+
+    icon:Register('AheadOfTheCurveMinimap', aotcLDB, self.db.global.minimap)
 end
 
 function AheadOfTheCurveOptions:OnEnable()
     local options = self:GetOptions()
+    local blizOptions = self:GetBlizOptions()
+
+    self:GetInstanceOptions(options)
     
     AceConfig:RegisterOptionsTable('AheadOfTheCurve', options)
-    AceConfigDialog:AddToBlizOptions('AheadOfTheCurve', 'AheadOfTheCurve')
+    AceConfig:RegisterOptionsTable('AheadOfTheCurveOptions', blizOptions)
+    AceConfigDialog:AddToBlizOptions('AheadOfTheCurveOptions', 'Ahead of the Curve')
+end
+
+function AheadOfTheCurveOptions:TableLength(t)
+    local count = 0
+
+    for _ in pairs(t) do 
+        count = count + 1 
+    end
+
+    return count
+end
+
+function AheadOfTheCurveOptions:LinkAchievement(index)
+    local achievementId = AheadOfTheCurve.instances[index].highestCompleted
+                        
+    if achievementId then
+        ChatFrame1EditBox:Show()
+        ChatFrame1EditBox:SetFocus()
+        ChatFrame1EditBox:Insert(GetAchievementLink(achievementId))
+    end
 end
 
 function AheadOfTheCurveOptions:OpenOptions()
-    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, 465)
+    local height = 450 
+    for index, instance in pairs(AheadOfTheCurve.instances) do
+        if instance.highestCompleted ~= nil then
+            height = height + 30
+        end
+    end
+
+    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, height)
     AceConfigDialog:Open('AheadOfTheCurve')
+end
+
+function AheadOfTheCurveOptions:GetBlizOptions()
+    return {
+        name = 'Ahead of the Curve',
+        handler = AheadOfTheCurve,
+        type = 'group',
+        args = {
+            configure = {
+                name = 'Configure',
+                descStyle = 'inline',
+                type = 'execute',
+                func = function()
+                    while CloseWindows() do end
+                    AheadOfTheCurveOptions:OpenOptions()
+                end
+            }
+        }
+    }
 end
 
 function AheadOfTheCurveOptions:GetOptions()
@@ -32,7 +102,6 @@ function AheadOfTheCurveOptions:GetOptions()
                 name = 'Enable Addon',
                 desc = 'Enables / disables the addon',
                 type = 'toggle',
-                width = 'full',                
                 get = function() return self.db.global.enable.addon end,
                 set = function(info, value)
                     self.db.global.enable.addon = value
@@ -49,27 +118,6 @@ function AheadOfTheCurveOptions:GetOptions()
                 name = 'Default Highest Achievements Found',
                 type = 'header'
             },
-            emeraldNightmare = {
-                order = 1.2,
-                image = function() local _, _, _, _, _, _, _, _, _, iconPath = GetAchievementInfo(10820) return iconPath end,
-                name = function() return string.format('Emerald Nightmare: %s', AheadOfTheCurve:DisplayHighestDefaultAchievement(1)) end,
-                type = 'description',
-                width = 'full'
-            },
-            trialOfValor = {
-                order = 1.3,
-                image = function() local _, _, _, _, _, _, _, _, _, iconPath = GetAchievementInfo(11394) return iconPath end,
-                name = function() return string.format('Trial of Valor: %s', AheadOfTheCurve:DisplayHighestDefaultAchievement(2)) end,
-                type = 'description',
-                width = 'full'
-            },
-            nighthold = {
-                order = 1.4,
-                image = function() local _, _, _, _, _, _, _, _, _, iconPath = GetAchievementInfo(10839) return iconPath end,
-                name = function() return string.format('The Nighthold: %s', AheadOfTheCurve:DisplayHighestDefaultAchievement(3)) end,
-                type = 'description',
-                width = 'full'
-            },
             header2 = {
                 order = 2,
                 name = 'Override Defaults',
@@ -80,10 +128,9 @@ function AheadOfTheCurveOptions:GetOptions()
                 name = 'Enable Override',
                 desc = 'Overrides the default achievements found and will always send the selected achievement from the dropdown.',
                 type = 'toggle',
-                width = 'full',
                 disabled = function() return not self.db.global.enable.addon end,
                 get = function() return self.db.global.enable.override end,
-                set = function(info, value) self.db.global.enable.override = value end      
+                set = function(info, value)self.db.global.enable.override = value end
             },
             serach = {
                 order = 2.2,
@@ -92,19 +139,51 @@ function AheadOfTheCurveOptions:GetOptions()
                 type = 'input',
                 width = 'full',
                 disabled = function() return not self.db.global.enable.override or not self.db.global.enable.addon end,
-                set = function(info, value) SetAchievementSearchString(value) end,
-                validate = function(info, value) if string.len(value) < 3 then return 'Error: Search term must be greater than 3 characters' else return true end end
+                set = function(info, value) 
+                    SetAchievementSearchString(value) 
+                    newSearch = true 
+                end,
+                validate = function(info, value) 
+                    if string.len(value) < 3 then 
+                        return 'Error: Search term must be greater than 3 characters' 
+                    else 
+                        return true 
+                    end 
+                end
             },
             results = {
                 order = 2.3,
-                name = 'Select Override Achievement',
+                name = function()
+                    if newSearch then 
+                        return string.format('Select Override Achievement: %s Results Returned', tostring(self:TableLength(AheadOfTheCurve.achievementSearchList)))
+                    else
+                        return 'Select Override Achievement'
+                    end
+                end,
                 desc = 'Results are limited to 500 and only completed achievemnts. Please try a more specific search term if you cannot find the achievement listed.',
                 type = 'select',
                 values = AheadOfTheCurve.achievementSearchList,
                 width = 'full',
-                disabled = function() return not self.db.global.enable.override or not self.db.global.enable.addon end,
-                get = function() return self.db.global.overrideAchievement end,
-                set = function(info, value) self.db.global.overrideAchievement = value end
+                disabled = function() 
+                    return not self.db.global.enable.override 
+                           or not self.db.global.enable.addon 
+                           or (not self.db.global.overrideAchievement and not newSearch) 
+                end,
+                get = function() 
+                    if self.db.global.overrideAchievement then
+                        return self.db.global.overrideAchievement
+                    else
+                        return 1
+                    end
+                end,
+                set = function(info, value) self.db.global.overrideAchievement = value end,
+                validate = function(info, value) 
+                    if value == 1 then 
+                        return 'Error: Please select an achievement' 
+                    else 
+                        return true 
+                    end 
+                end
             },
             header3 = {
                 order = 3,
@@ -116,11 +195,28 @@ function AheadOfTheCurveOptions:GetOptions()
                 name = 'Always Check Whisper Dialog Checkbox',
                 desc = 'This will always check the whisper dialog checkbox when signing up for a group by default.',
                 type = 'toggle',
-                width = 'full',
+                width = 'double',
                 disabled = function() return not self.db.global.enable.addon end,
                 get = function() return self.db.global.enable.whisper end,
-                set = function(info, value) self.db.global.enable.whisper = value end ,
+                set = function(info, value) self.db.global.enable.whisper = value end,
                 confirm = function() return 'Changes to this setting will not take effect until the ui is reloaded.' end
+            },
+            minimap = {
+                order = 3.2,
+                name = 'Show Minimap Icon',
+                desc = 'Displays the minimap icon.',
+                type = 'toggle',
+                disabled = function() return not self.db.global.enable.addon end,
+                get = function() return not self.db.global.minimap.hide end,
+                set = function(info, value) 
+                    self.db.global.minimap.hide = not value 
+
+                    if value then 
+                        icon:Show('AheadOfTheCurveMinimap') 
+                    else 
+                        icon:Hide('AheadOfTheCurveMinimap') 
+                    end 
+                end
             },
             header4 = {
                 order = 4,
@@ -129,9 +225,54 @@ function AheadOfTheCurveOptions:GetOptions()
             },
             about = {
                 order = 4.1,
-                name = 'Version: @project-version@ \nCreated by Pigletoos of Skywall',
+                name = 'Version: @project-version@\nCreated by Pigletoos of Skywall-US',
                 type = 'description'
             }
         }
     }
+end
+
+function AheadOfTheCurveOptions:GetInstanceOptions(options)
+    local highestCompletedCount = 0
+
+    for index, instance in pairs(AheadOfTheCurve.instances) do
+        if next(instance.achievements) ~= nil and instance.highestCompleted ~= nil then
+            options.args[string.format('instance%sIcon', index)] = {
+                order = 1 + (index / 10),
+                image = function() local _, iconPath = AheadOfTheCurve:DisplayHighestDefaultAchievement(index) return iconPath end,
+                type = 'execute',
+                width = 'half',
+                name = '',
+                func = function() self:LinkAchievement(index) end
+            }
+
+            options.args[string.format('instance%sButton', index)] = {
+                order = 1 + ((index / 10) + 0.01),
+                name = function() local name = AheadOfTheCurve:DisplayHighestDefaultAchievement(index) return string.format('%s: %s', instance.name, name) end,
+                desc = 'Link Achievement',
+                type = 'execute',
+                width = 'double',
+                func = function() self:LinkAchievement(index) end
+            }
+
+            highestCompletedCount = highestCompletedCount + 1
+        end
+    end
+
+    if highestCompletedCount == 0 then
+        local instances = {}
+
+        for index, instance in pairs(AheadOfTheCurve.instances) do
+            if next(instance.achievements) ~= nil then
+                table.insert(instances, string.format('\n - %s', instance.name))
+            end
+        end
+
+        options.args.noneFound = {
+            order = 1.1,
+            name = string.format('No achievements have been earned for: %s', table.concat(instances)),
+            width = 'full',
+            type = 'description'
+        }
+    end
 end
