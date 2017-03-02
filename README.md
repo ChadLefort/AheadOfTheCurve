@@ -11,8 +11,8 @@ A World of Wacraft addon that automates the sending of Ahead of the Curve achiev
 - Automates the sending of Ahead of the Curve/Mythic Plus/Karazhan achievements when signing up for groups via the LFG system.
 - Helps links your mythic plus keystone when signing up for mythic plus dungeon.
 - Determines highest achievment found for the raid your signing up for on your account.
-    - Raids: Cutting Edge, Ahead of the Curve, Normal/LFR Achievement
-    - Mythic Plus: Realm First! Keystone Master, Keystone Master, Keystone Conqueror, Keystone Challenger
+    - Raids: Cutting Edge, Mythic End Boss Achievement, Ahead of the Curve, Normal/LFR Achievement
+    - Mythic Plus: Keystone Master, Keystone Conqueror, Keystone Challenger
     - Karazhan: One Night in Karazhan, Return to Karazhan
 - Allows you to override defaults by picking any achievement you have completed. This override will send for any Legion raid, mythic plus dungeon, or Karazhan group you sign up for.
 - When signing up for a group you have the option to send a whisper or not. If no default achievement is found and no override is set no whisper will be sent.
