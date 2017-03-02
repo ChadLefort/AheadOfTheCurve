@@ -9,6 +9,7 @@ A World of Wacraft addon that automates the sending of Ahead of the Curve achiev
 ### Features
 
 - Automates the sending of Ahead of the Curve/Mythic Plus/Karazhan achievements when signing up for groups via the LFG system.
+- Helps links your mythic plus keystone when signing up for mythic plus dungeon.
 - Determines highest achievment found for the raid your signing up for on your account.
     - Raids: Cutting Edge, Ahead of the Curve, Normal/LFR Achievement
     - Mythic Plus: Realm First! Keystone Master, Keystone Master, Keystone Conqueror, Keystone Challenger
@@ -19,6 +20,7 @@ A World of Wacraft addon that automates the sending of Ahead of the Curve achiev
 
 ### Future Additions
 
+- PvP
 - Smart Send (Sends always based on group listing's title and description)
 
 ### Options

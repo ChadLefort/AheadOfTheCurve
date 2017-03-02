@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.0.1 (03/01/2017)
+
+### New Features
+
+- Now you can link your mythic plus keystone from the role select dialog box if you are signing up for a mythic plus dungeon!
+
+### Improvements
+
+- Added mythic achievements for Xavius, Helya, and Gul'dan. So if you don't have Cutting Edge for Xavius the highest default will be the mythic kill achievement.
+- Always check achievement whisper option now doesn't require a ui reload. **Breaking Change: Always check whisper dialog checkbox options will now be set back to defaults.** 
+
 ## 1.0.0 (02/05/2017)
 
 ### New Features

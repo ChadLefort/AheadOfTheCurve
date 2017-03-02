@@ -6,6 +6,7 @@ local AceConfigRegistry = LibStub('AceConfigRegistry-3.0')
 local LDB = LibStub('LibDataBroker-1.1')
 local icon = LibStub('LibDBIcon-1.0')
 local newSearch = false
+local optionsOpened = false
 
 function AheadOfTheCurveOptions:OnInitialize()
     self.db = AheadOfTheCurve.db
@@ -61,15 +62,23 @@ function AheadOfTheCurveOptions:LinkAchievement(index)
 end
 
 function AheadOfTheCurveOptions:OpenOptions()
-    local height = 450 
-    for index, instance in pairs(AheadOfTheCurve.instances) do
-        if instance.highestCompleted ~= nil then
-            height = height + 30
-        end
-    end
+    if not optionsOpened then
+        optionsOpened = true
 
-    AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, height)
-    AceConfigDialog:Open('AheadOfTheCurve')
+        local height = 480 
+
+        for index, instance in pairs(AheadOfTheCurve.instances) do
+            if instance.highestCompleted ~= nil then
+                height = height + 30
+            end
+        end
+
+        AceConfigDialog:SetDefaultSize('AheadOfTheCurve', 500, height)
+        AceConfigDialog:Open('AheadOfTheCurve')
+    else
+        optionsOpened = false
+        AceConfigDialog:Close('AheadOfTheCurve')
+    end
 end
 
 function AheadOfTheCurveOptions:GetBlizOptions()
@@ -190,19 +199,34 @@ function AheadOfTheCurveOptions:GetOptions()
                 name = 'Other Options',
                 type = 'header'
             },
-            enableWhisper = {
+            enableWhisperAchievement = {
                 order = 3.1,
-                name = 'Always Check Whisper Dialog Checkbox',
-                desc = 'This will always check the whisper dialog checkbox when signing up for a group by default.',
+                name = 'Always Check Achievement Whisper Dialog Checkbox',
+                desc = 'This will always check the achievement whisper dialog checkbox when signing up for a group by default.',
                 type = 'toggle',
                 width = 'double',
                 disabled = function() return not self.db.global.enable.addon end,
-                get = function() return self.db.global.enable.whisper end,
-                set = function(info, value) self.db.global.enable.whisper = value end,
-                confirm = function() return 'Changes to this setting will not take effect until the ui is reloaded.' end
+                get = function() return self.db.global.enable.whispers.achievement end,
+                set = function(info, value) 
+                    self.db.global.enable.whispers.achievement = value 
+                    AheadOfTheCurve.checkButtonAchievement:SetChecked(value) 
+                end,
+            },
+            enableWhisperKeystone = {
+                order = 3.2,
+                name = 'Always Check Keystone Whisper Dialog Checkbox',
+                desc = 'This will always check the keystone whisper dialog checkbox when signing up for a mythic plus group by default.',
+                type = 'toggle',
+                width = 'double',
+                disabled = function() return not self.db.global.enable.addon end,
+                get = function() return self.db.global.enable.whispers.keystone end,
+                set = function(info, value) 
+                    self.db.global.enable.whispers.keystone = value 
+                    AheadOfTheCurve.checkButtonKeystone:SetChecked(value)  
+                end,
             },
             minimap = {
-                order = 3.2,
+                order = 3.3,
                 name = 'Show Minimap Icon',
                 desc = 'Displays the minimap icon.',
                 type = 'toggle',
