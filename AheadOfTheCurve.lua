@@ -77,7 +77,6 @@ function AheadOfTheCurve:OnEnable()
     self:RegisterEvent('ACHIEVEMENT_SEARCH_UPDATED')
     self:RegisterEvent('ACHIEVEMENT_EARNED')
     self:GetHighestDefaultAchievement()
-    self:ScanBags()
     
     if not self.container then
         self.container = CreateFrame('Frame', 'AheadOfTheCurveDialog', LFGListApplicationDialog)
@@ -96,8 +95,6 @@ function AheadOfTheCurve:OnEnable()
         self.checkButtonAchievement:SetSize(24, 24)
         self.checkButtonAchievement:SetPoint('CENTER', -85, 0)
         self.checkButtonAchievement:SetChecked(self.db.global.enable.whispers.achievement)
-        self.checkButtonAchievement.text:SetText('Use Ahead of the Curve Whisper')
-        self.checkButtonAchievement.text:SetWidth(175)
     end
 
     if not self.checkButtonKeystone then
@@ -105,7 +102,7 @@ function AheadOfTheCurve:OnEnable()
         self.checkButtonKeystone:SetSize(24, 24)
         self.checkButtonKeystone:SetPoint('CENTER', -85, -11)
         self.checkButtonKeystone:SetChecked(self.db.global.enable.whispers.keystone)
-        self.checkButtonKeystone.text:SetText('Link Mythic Plus Keystone')
+        self.checkButtonKeystone.text:SetText('Send Mythic Plus Keystone')
         self.checkButtonKeystone.text:SetWidth(145)
     end
     
@@ -180,32 +177,55 @@ function AheadOfTheCurve:GetLFGCategory(findAGroupButton)
         self.container:Show()
         self.checkButtonAchievement:Show()
     end
+
+    if category == 2 then
+        self:ScanBagsForKeystone()
+    end
 end
 
 function AheadOfTheCurve:GetLFGInstance(signUpButton)
     local _, instanceId = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().selectedResult)
     local highestCompleted = self:GetLFGAchievement(instanceId)
     local isMythicDungeon = self:IsMythicDungeon(instanceId)
-    
+    local checkButtonAchievementText, checkButtonAchievementWidth, checkButtonAchievementPoint = self:GetCheckButtonAchievementData(instanceId, isMythicDungeon)
+
     if not highestCompleted and not self.db.global.enable.override or raidId == self.instances[4].ids[1] then
         self.container:Hide()
         self.checkButtonAchievement:Hide()
     else
         self.container:Show()
         self.checkButtonAchievement:Show()
-        self.checkButtonAchievement:SetChecked(self.db.global.enable.whispers.achievement)      
+        self.checkButtonAchievement:SetChecked(self.db.global.enable.whispers.achievement)
+        self.checkButtonAchievement.text:SetText(checkButtonAchievementText)
+        self.checkButtonAchievement.text:SetWidth(checkButtonAchievementWidth)
+        self.checkButtonAchievement:SetPoint('CENTER', checkButtonAchievementPoint, 0)      
     end
 
     if isMythicDungeon and keyStoneLink then
         self:ShowMythicPlusOption(highestCompleted)
-        self.checkButtonKeystone:SetChecked(self.db.global.enable.whispers.keystone)
     else
         self.container:SetPoint('BOTTOM', 0, -55)
         self.container:SetSize(306, 50)
-        self.checkButtonAchievement:SetPoint('CENTER', -85, 0)
+        self.checkButtonAchievement:SetPoint('CENTER', checkButtonAchievementPoint, 0)
         self.checkButtonKeystone:Hide()
         self.checkButtonKeystone:SetChecked(false)
     end
+end
+
+function AheadOfTheCurve:GetCheckButtonAchievementData(instanceId, isMythicDungeon)
+    if self.db.global.enable.override then
+        return 'Send Override Achievement', 158, -85
+    end
+
+    if isMythicDungeon then
+        return 'Send Mythic Plus Achievement', 170, -85
+    end
+
+    if instanceId == 455 then
+        return 'Send Karazhan Achievement', 155, -75
+    end
+
+    return 'Send Ahead of the Curve Achievement', 205, -100
 end
 
 function AheadOfTheCurve:GetLFGAchievement(instanceId)
@@ -254,7 +274,7 @@ function AheadOfTheCurve:BuildWhisper(achievementId)
     end
 end
 
-function AheadOfTheCurve:ScanBags()
+function AheadOfTheCurve:ScanBagsForKeystone()
     for bag = 0, 4 do
         local numSlots = GetContainerNumSlots(bag)
 
@@ -282,12 +302,14 @@ function AheadOfTheCurve:ShowMythicPlusOption(highestCompleted)
         self.checkButtonAchievement:Hide()
         self.container:SetPoint('BOTTOM', 0, -55)
         self.container:SetSize(306, 50)
-        self.checkButtonKeystone:SetPoint('CENTER', -85, 0)
+        self.checkButtonKeystone:SetPoint('CENTER', -75, 0)
+        self.container:Show()
     else
         self.container:SetPoint('BOTTOM', 0, -75)
         self.container:SetSize(306, 70)
         self.checkButtonAchievement:SetPoint('CENTER', -85, 9)
     end
 
+    self.checkButtonKeystone:SetChecked(self.db.global.enable.whispers.keystone)    
     self.checkButtonKeystone:Show()
 end

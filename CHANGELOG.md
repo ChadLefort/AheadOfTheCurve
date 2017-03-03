@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.1 (03/02/2017)
+
+### Improvements
+
+- Fixed issue with not always finding keystones in bags. This prevents the send mythic keystone option from showing up.
+- Added new wording for options based upon what your signing up for. For example, signing up for mythic plus will now say "Send Mythic Plus Achievement". Previously it just said "Use Ahead of the Curve Whisper".
+
 ## 1.1.0 (03/01/2017)
 
 ### New Features
