@@ -34,19 +34,19 @@ function AheadOfTheCurve:OnInitialize()
         {
             ids = {413, 414, 468},
             name = 'Emerald Nightmare',
-            achievements = {11191, 10827, 11194, 10820},
+            achievements = {10854, 11191, 10827, 11194, 10820},
             highestCompleted = nil,
         },
         {
             ids = {456, 457},
             name = 'Trial of Valor',
-            achievements = {11580, 11398, 11581, 11394},
+            achievements = {11405, 11580, 11398, 11581, 11394},
             highestCompleted = nil,
         },
         {
             ids = {415, 416},
             name = 'The Nighthold',
-            achievements = {11192, 10850, 11195, 10839},
+            achievements = {10855, 11192, 10850, 11195, 10839},
             highestCompleted = nil,
         },
         {
@@ -58,7 +58,7 @@ function AheadOfTheCurve:OnInitialize()
         {
             ids = {459, 460, 461, 462, 463, 464, 465, 466, 467},
             name = 'Mythic Plus',
-            achievements = {11162, 11185, 11184},
+            achievements = {11224, 11162, 11185, 11184},
             highestCompleted = nil,
         },
         {

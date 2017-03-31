@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.2 (03/30/2017)
+
+### Improvements
+
+- Updated for patch 7.2
+- Added realm first achievements as highest earned for Emerald Nightmare, Trial of Valor, Nighthold, and Keystone Master.
+
 ## 1.1.1 (03/02/2017)
 
 ### Improvements
