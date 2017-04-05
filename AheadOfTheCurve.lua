@@ -56,7 +56,7 @@ function AheadOfTheCurve:OnInitialize()
             highestCompleted = nil,
         },
         {
-            ids = {459, 460, 461, 462, 463, 464, 465, 466, 467},
+            ids = {459, 460, 461, 462, 463, 464, 465, 466, 467, 471, 473, 476},
             name = 'Mythic Plus',
             achievements = {11224, 11162, 11185, 11184},
             highestCompleted = nil,
@@ -65,6 +65,12 @@ function AheadOfTheCurve:OnInitialize()
             ids = {455},
             name = 'Karazhan',
             achievements = {11430, 11429},
+            highestCompleted = nil,
+        },
+        {
+            ids = {478, 479},
+            name = 'Tomb of Sargeras',
+            achievements = {11783, 11781, 11790},
             highestCompleted = nil,
         }
     }

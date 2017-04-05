@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.3 (04/05/2017)
+
+### Improvements
+
+- Added ids for new mythic plus dungeons (Upper & Lower Karazhan and Cathedral of Eternal Night).
+- Added Tomb of Sargeras and some achievements exect for AoTC and Cutting Edge because I don't know the ids right now. Will add them once the raid actually comes out. 
+
 ## 1.1.2 (03/30/2017)
 
 ### Improvements
