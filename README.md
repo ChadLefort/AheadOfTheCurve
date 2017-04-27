@@ -4,7 +4,7 @@ Available to download on Curse by clicking [here](https://mods.curse.com/addons/
 
 ### About
 
-A World of Wacraft addon that automates the sending of Ahead of the Curve achievments when signing up for raid groups via the Looking for Group system.
+A World of Warcraft addon that automates the sending of Ahead of the Curve achievements when signing up for raid groups via the Looking for Group system.
 
 ### Features
 
