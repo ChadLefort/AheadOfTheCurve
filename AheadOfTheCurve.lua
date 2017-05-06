@@ -77,7 +77,7 @@ function AheadOfTheCurve:OnInitialize()
 end
 
 function AheadOfTheCurve:OnEnable()
-    self:HookScript(LFGListFrame.CategorySelection.FindGroupButton, 'OnClick', 'GetLFGCategory')
+    self:SecureHookScript(LFGListFrame.CategorySelection.FindGroupButton, 'OnClick', 'GetLFGCategory')
     self:HookScript(LFGListFrame.SearchPanel.SignUpButton, 'OnClick', 'GetLFGInstance')
     self:HookScript(LFGListApplicationDialog.SignUpButton, 'OnClick', 'SendWhisper')
     self:RegisterEvent('ACHIEVEMENT_SEARCH_UPDATED')

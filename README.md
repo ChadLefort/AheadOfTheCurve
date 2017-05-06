@@ -4,13 +4,13 @@ Available to download on Curse by clicking [here](https://mods.curse.com/addons/
 
 ### About
 
-A World of Wacraft addon that automates the sending of Ahead of the Curve achievments when signing up for raid groups via the Looking for Group system.
+A World of Warcraft addon that automates the sending of Ahead of the Curve achievements when signing up for raid groups via the Looking for Group system.
 
 ### Features
 
 - Automates the sending of Ahead of the Curve/Mythic Plus/Karazhan achievements when signing up for groups via the LFG system.
 - Helps links your mythic plus keystone when signing up for mythic plus dungeon.
-- Determines highest achievment found for the raid your signing up for on your account.
+- Determines highest achievement found for the raid your signing up for on your account.
     - Raids: Realm First, Cutting Edge, Mythic End Boss Achievement, Ahead of the Curve, Normal/LFR Achievement
     - Mythic Plus: Realm First, Keystone Master, Keystone Conqueror, Keystone Challenger
     - Karazhan: One Night in Karazhan, Return to Karazhan

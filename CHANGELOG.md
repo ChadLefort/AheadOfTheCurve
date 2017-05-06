@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.4 (05/06/2017)
+
+### Improvements
+
+- Fixed issue that was preventing search results from displaying initially. This was due to Blizzard making some LFG functions private. 
+
 ## 1.1.3 (04/05/2017)
 
 ### Improvements
