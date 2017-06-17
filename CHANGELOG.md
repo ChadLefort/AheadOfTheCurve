@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.5 (06/16/2017)
+
+### Improvements
+
+- Added missing Tomb of Sargeras achievements
+
 ## 1.1.4 (05/06/2017)
 
 ### Improvements

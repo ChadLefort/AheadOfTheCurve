@@ -70,7 +70,7 @@ function AheadOfTheCurve:OnInitialize()
         {
             ids = {478, 479},
             name = 'Tomb of Sargeras',
-            achievements = {11783, 11781, 11790},
+            achievements = {11783, 11875, 11781, 11874, 11790},
             highestCompleted = nil,
         }
     }
