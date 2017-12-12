@@ -38,13 +38,13 @@ function AheadOfTheCurve:OnInitialize()
             highestCompleted = nil,
         },
         {
-            ids = {456, 457},
+            ids = {456, 457, 480},
             name = 'Trial of Valor',
             achievements = {11405, 11580, 11398, 11581, 11394},
             highestCompleted = nil,
         },
         {
-            ids = {415, 416},
+            ids = {415, 416, 481},
             name = 'The Nighthold',
             achievements = {10855, 11192, 10850, 11195, 10839},
             highestCompleted = nil,

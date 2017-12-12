@@ -1,10 +1,16 @@
 # Change Log
 
-## 1.1.6 (06/16/2017)
+## 1.1.7 (12/12/2017)
 
 ### Improvements
 
-* Added missing Antorus achievements and id for Triunvirate (Thanks Kpirao!)
+* Added missing mythic level raid detection setting in LFG (Thanks Kpi!)
+
+## 1.1.6 (12/12/2017)
+
+### Improvements
+
+* Added missing Antorus achievements and id for Triunvirate (Thanks Kpi!)
 
 ## 1.1.5 (06/16/2017)
 
