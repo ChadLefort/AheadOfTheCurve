@@ -32,52 +32,22 @@ function AheadOfTheCurve:OnInitialize()
 
     self.instances = {
         {
-            ids = {413, 414, 468},
-            name = 'Emerald Nightmare',
-            achievements = {10854, 11191, 10827, 11194, 10820},
+            ids = {502, 504, 507, 510, 514, 518, 522, 526, 530, 534, 659, 661},
+            name = 'Mythic Plus (BfA)',
+            achievements = {13078, 13080, 13079, 13075},
             highestCompleted = nil,
         },
         {
-            ids = {456, 457, 480},
-            name = 'Trial of Valor',
-            achievements = {11405, 11580, 11398, 11581, 11394},
+            ids = {494, 495, 496},
+            name = 'Uldir',
+            achievements = {12535, 12533, 12536, 12523},
             highestCompleted = nil,
         },
         {
-            ids = {415, 416, 481},
-            name = 'The Nighthold',
-            achievements = {10855, 11192, 10850, 11195, 10839},
-            highestCompleted = nil,
-        },
-        {
-            ids = {458},
+            ids = {657},
             name = 'World Bosses',
             achievements = {},
             highestCompleted = nil,
-        },
-        {
-            ids = {459, 460, 461, 462, 463, 464, 465, 466, 467, 471, 473, 476, 485},
-            name = 'Mythic Plus',
-            achievements = {11224, 11162, 11185, 11184},
-            highestCompleted = nil,
-        },
-        {
-            ids = {455},
-            name = 'Karazhan',
-            achievements = {11430, 11429},
-            highestCompleted = nil,
-        },
-        {
-            ids = {478, 479},
-            name = 'Tomb of Sargeras',
-            achievements = {11783, 11875, 11781, 11874, 11790},
-            highestCompleted = nil,
-        },
-        {
-            ids = {482, 483},
-            name = 'Antorus, the Burning Throne',
-            achievements = {12258, 12111, 12002, 12110, 11991},
-            highestCompleted = nil, 
         }
     }
 end
@@ -199,9 +169,9 @@ function AheadOfTheCurve:GetLFGInstance(signUpButton)
     local _, instanceId = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().selectedResult)
     local highestCompleted = self:GetLFGAchievement(instanceId)
     local isMythicDungeon = self:IsMythicDungeon(instanceId)
-    local checkButtonAchievementText, checkButtonAchievementWidth, checkButtonAchievementPoint = self:GetCheckButtonAchievementData(instanceId, isMythicDungeon)
+    local checkButtonAchievementText, checkButtonAchievementWidth, checkButtonAchievementPoint = self:GetCheckButtonAchievementData(isMythicDungeon)
 
-    if not highestCompleted and not self.db.global.enable.override or raidId == self.instances[4].ids[1] then
+    if not highestCompleted and not self.db.global.enable.override or instanceId == self.instances[3].ids[1] then
         self.container:Hide()
         self.checkButtonAchievement:Hide()
     else
@@ -224,17 +194,13 @@ function AheadOfTheCurve:GetLFGInstance(signUpButton)
     end
 end
 
-function AheadOfTheCurve:GetCheckButtonAchievementData(instanceId, isMythicDungeon)
+function AheadOfTheCurve:GetCheckButtonAchievementData(isMythicDungeon)
     if self.db.global.enable.override then
         return 'Send Override Achievement', 158, -85
     end
 
     if isMythicDungeon then
         return 'Send Mythic Plus Achievement', 170, -85
-    end
-
-    if instanceId == 455 then
-        return 'Send Karazhan Achievement', 155, -75
     end
 
     return 'Send Ahead of the Curve Achievement', 205, -100
@@ -302,7 +268,7 @@ function AheadOfTheCurve:ScanBagsForKeystone()
 end
 
 function AheadOfTheCurve:IsMythicDungeon(instanceId)
-    for _, id in pairs(self.instances[5].ids) do
+    for _, id in pairs(self.instances[1].ids) do
         if id == instanceId then
             return true
         end

@@ -249,7 +249,7 @@ function AheadOfTheCurveOptions:GetOptions()
             },
             about = {
                 order = 4.1,
-                name = 'Version: @project-version@\nCreated by Pigletoos of Skywall-US',
+                name = 'Version: @project-version@\nCreated by Pigletoos of Zul\'jin-US',
                 type = 'description'
             }
         }
