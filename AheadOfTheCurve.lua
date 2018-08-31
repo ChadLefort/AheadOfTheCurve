@@ -170,8 +170,9 @@ function AheadOfTheCurve:GetLFGInstance(signUpButton)
     local highestCompleted = self:GetLFGAchievement(instanceId)
     local isMythicDungeon = self:IsMythicDungeon(instanceId)
     local checkButtonAchievementText, checkButtonAchievementWidth, checkButtonAchievementPoint = self:GetCheckButtonAchievementData(isMythicDungeon)
+    local worldBosses = self.instances[3].ids[1]
 
-    if not highestCompleted and not self.db.global.enable.override or instanceId == self.instances[3].ids[1] then
+    if not highestCompleted and not self.db.global.enable.override or not self.db.global.enable.override and instanceId == worldBosses then
         self.container:Hide()
         self.checkButtonAchievement:Hide()
     else
@@ -218,8 +219,8 @@ end
 
 function AheadOfTheCurve:SendWhisper(signUpButton)
     local _, instanceId, _, _, _, _, _, _, _, _, _, _, leaderName = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().resultID)
-    
-    if self.checkButtonAchievement:GetChecked() or self.checkButtonKeystone:GetChecked() or instanceId == self.instances[4].ids[1] then
+
+    if self.checkButtonAchievement:GetChecked() or self.checkButtonKeystone:GetChecked() then
         local achievementId
         
         if self.db.global.enable.override and self.db.global.overrideAchievement then

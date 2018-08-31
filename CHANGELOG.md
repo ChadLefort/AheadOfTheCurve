@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.9 (08/30/2018)
+
+### Improvements
+
+- Fixed error that prevented users from signing up for groups.
+
 ## 1.1.8 (08/29/2018)
 
 ### Improvements
