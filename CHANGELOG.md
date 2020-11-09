@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.10 (11/08/2020)
+
+### Improvements
+
+- Updated for Shadowlands pre-patch. (Thanks to gaveer!)
+
 ## 1.1.9 (08/30/2018)
 
 ### Improvements
