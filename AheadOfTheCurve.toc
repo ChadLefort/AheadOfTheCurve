@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 90001
 ## Title: Ahead of the Curve
 ## Notes: Automates Ahead of the Curve Achievement Whispers
 ## Version: @project-version@

@@ -61,7 +61,7 @@ function AheadOfTheCurve:OnEnable()
     self:GetHighestDefaultAchievement()
     
     if not self.container then
-        self.container = CreateFrame('Frame', 'AheadOfTheCurveDialog', LFGListApplicationDialog)
+        self.container = CreateFrame('Frame', 'AheadOfTheCurveDialog', LFGListApplicationDialog, BackdropTemplateMixin and "BackdropTemplate");
         self.container:SetSize(306, 50)
         self.container:SetPoint('BOTTOM', 0, -55)
         self.container:SetBackdrop({
@@ -166,13 +166,13 @@ function AheadOfTheCurve:GetLFGCategory(findAGroupButton)
 end
 
 function AheadOfTheCurve:GetLFGInstance(signUpButton)
-    local _, instanceId = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().selectedResult)
-    local highestCompleted = self:GetLFGAchievement(instanceId)
-    local isMythicDungeon = self:IsMythicDungeon(instanceId)
+    local searchResultInfo = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().selectedResult)
+    local highestCompleted = self:GetLFGAchievement(searchResultInfo.activityID)
+    local isMythicDungeon = self:IsMythicDungeon(searchResultInfo.activityID)
     local checkButtonAchievementText, checkButtonAchievementWidth, checkButtonAchievementPoint = self:GetCheckButtonAchievementData(isMythicDungeon)
     local worldBosses = self.instances[3].ids[1]
 
-    if not highestCompleted and not self.db.global.enable.override or not self.db.global.enable.override and instanceId == worldBosses then
+    if not highestCompleted and not self.db.global.enable.override or not self.db.global.enable.override and searchResultInfo.activityID == worldBosses then
         self.container:Hide()
         self.checkButtonAchievement:Hide()
     else
@@ -218,7 +218,7 @@ function AheadOfTheCurve:GetLFGAchievement(instanceId)
 end
 
 function AheadOfTheCurve:SendWhisper(signUpButton)
-    local _, instanceId, _, _, _, _, _, _, _, _, _, _, leaderName = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().resultID)
+    local searchResultInfo = C_LFGList.GetSearchResultInfo(signUpButton:GetParent().resultID)
 
     if self.checkButtonAchievement:GetChecked() or self.checkButtonKeystone:GetChecked() then
         local achievementId
@@ -226,11 +226,11 @@ function AheadOfTheCurve:SendWhisper(signUpButton)
         if self.db.global.enable.override and self.db.global.overrideAchievement then
             achievementId = self.db.global.overrideAchievement
         else
-            achievementId = self:GetLFGAchievement(instanceId)
+            achievementId = self:GetLFGAchievement(searchResultInfo.activityID)
         end
         
         if achievementId then
-            local success = pcall(SendChatMessage, self:BuildWhisper(achievementId), 'WHISPER', nil, leaderName)
+            local success = pcall(SendChatMessage, self:BuildWhisper(achievementId), 'WHISPER', nil, searchResultInfo.leaderName)
             
             if not success then
                 self:Print('There was an error sending your whisper.')
