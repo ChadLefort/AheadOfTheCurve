@@ -12,7 +12,7 @@ A World of Warcraft addon that automates the sending of Ahead of the Curve achie
 - Helps links your Mythic Plus keystone when signing up for Mythic Plus dungeon.
 - Determines highest achievement found for the raid your signing up for on your account.
   - Raids: Cutting Edge, Mythic End Boss Achievement, Ahead of the Curve, Normal/LFR Achievement
-  - Mythic Plus: Realm First, Keystone Master, Keystone Conqueror, Keymaster
+  - Mythic Plus: Realm First, Keystone Master, Keystone Conqueror
 - Allows you to override defaults by picking any achievement you have completed. This override will send for any Battle for Azeroth raid or Mythic Plus dungeon group you sign up for.
 - When signing up for a group you have the option to send a whisper or not. If no default achievement is found and no override is set no whisper will be sent.
 - Clicking on the button or icon under the Default Highest Achievements Found section will now link that achievement to your chat input box.

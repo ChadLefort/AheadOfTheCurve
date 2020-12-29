@@ -33,14 +33,14 @@ function AheadOfTheCurve:OnInitialize()
     self.instances = {
         {
             ids = {691, 695, 699, 703, 705, 709, 713, 717},
-            name = 'Mythic Plus',
-            achievements = {14662, 14532, 14531}
+            name = 'Mythic Plus (Shadowlands)',
+            achievements = {14662, 14532, 14531},
             highestCompleted = nil,
         },
         {
             ids = {720, 722, 721},
             name = 'Castle Nathria',
-            achievements = {14461, 14365, 14460, 14715}
+            achievements = {14461, 14365, 14460, 14715},
             highestCompleted = nil,
         }
     }
@@ -164,9 +164,8 @@ function AheadOfTheCurve:GetLFGInstance(signUpButton)
     local highestCompleted = self:GetLFGAchievement(searchResultInfo.activityID)
     local isMythicDungeon = self:IsMythicDungeon(searchResultInfo.activityID)
     local checkButtonAchievementText, checkButtonAchievementWidth, checkButtonAchievementPoint = self:GetCheckButtonAchievementData(isMythicDungeon)
-    local worldBosses = self.instances[3].ids[1]
 
-    if not highestCompleted and not self.db.global.enable.override or not self.db.global.enable.override and searchResultInfo.activityID == worldBosses then
+    if not highestCompleted and not self.db.global.enable.override or not self.db.global.enable.override then
         self.container:Hide()
         self.checkButtonAchievement:Hide()
     else
