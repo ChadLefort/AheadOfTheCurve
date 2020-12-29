@@ -32,21 +32,15 @@ function AheadOfTheCurve:OnInitialize()
 
     self.instances = {
         {
-            ids = {502, 504, 507, 510, 514, 518, 522, 526, 530, 534, 659, 661},
-            name = 'Mythic Plus (BfA)',
-            achievements = {13078, 13080, 13079, 13075},
+            ids = {691, 695, 699, 703, 705, 709, 713, 717},
+            name = 'Mythic Plus',
+            achievements = {14662, 14532, 14531}
             highestCompleted = nil,
         },
         {
-            ids = {494, 495, 496},
-            name = 'Uldir',
-            achievements = {12535, 12533, 12536, 12523},
-            highestCompleted = nil,
-        },
-        {
-            ids = {657},
-            name = 'World Bosses',
-            achievements = {},
+            ids = {720, 722, 721},
+            name = 'Castle Nathria',
+            achievements = {14461, 14365, 14460, 14715}
             highestCompleted = nil,
         }
     }

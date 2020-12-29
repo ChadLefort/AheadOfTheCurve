@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.11 (12/28/2020)
+
+### Improvements
+
+- Added Shadowlands raids and dungeons.
+
 ## 1.1.10 (11/08/2020)
 
 ### Improvements
